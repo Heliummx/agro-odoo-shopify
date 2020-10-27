@@ -1,7 +1,7 @@
 from odoo import models, fields
 
 
-class ResCompany(models.Model):
+class ResCompanyInheritShopifyOdooInventorySalesSynchronisation(models.Model):
     _inherit = 'res.company'
 
-    shopify_product_upload_url = fields.Char(string="Shopify product upload url")
+    shopify_post_url = fields.Char(string="Shopify webservice post url")
