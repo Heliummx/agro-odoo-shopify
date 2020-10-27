@@ -1,1 +1,0 @@
-# agro-odoo-shopify
