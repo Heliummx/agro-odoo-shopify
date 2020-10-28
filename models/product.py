@@ -82,3 +82,4 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     shopify_variant_id = fields.Char(string="Shopify variant_id")
+    shopify_inventory_item_id = fields.Char(string="Shopify inventory_item_id")
