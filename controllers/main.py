@@ -239,6 +239,7 @@ class ShopifyOdooProductUploadResponse(http.Controller):
                 response_variants = data.get('variants')
                 for response_variant in response_variants:
                     if response_variant.get('sku'):
+                        _logger.info("Iterating variants:")
                         for variant in product_template_id.product_variant_ids:
                             _logger.info("Im searching in variants")
                             if variant.default_code == response_variant['sku']:
