@@ -29,8 +29,8 @@ class ProductTemplate(models.Model):
         additional_images = []
         if self.image:
             product_image = self.image.decode('utf-8')
-        if self.x_studio_image_sopify:
-            table_image = self.x_studio_image_sopify.decode('utf-8')
+        if self.x_studio_image_shopify:
+            table_image = self.x_studio_image_shopify.decode('utf-8')
         for image_data in self.product_image_ids:
             additional_images.append( image_data.image.decode('utf-8') )
         shopify_data_post = {
