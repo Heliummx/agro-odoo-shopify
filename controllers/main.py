@@ -242,6 +242,7 @@ class ShopifyOdooProductUploadResponse(http.Controller):
                         for variant in product_template_id.product_variant_ids:
                             if variant.default_code == response_variant['sku']:
                                 variant.shopify_variant_id = response_variant.get('variant_id')
+                                variant.shopify_inventory_item_id = response_variant.get('inventory_item_id')
                                 break
 
         except Exception as e:
