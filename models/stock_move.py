@@ -17,7 +17,7 @@ class StockMoveLineInheritShopifyOdooInventorySalesSynchronisation(models.Model)
                     'sku': line.product_id.default_code,
                     'stock_qty': line.product_id.qty_available,
                     'price': line.product_id.list_price, 
-                    'inventory_item_id': line.product_id.inventory_item_id}
+                    'inventory_item_id': line.product_id.shopify_inventory_item_id}
             _logger.info("Loading data to webservice %s" % data)
             headers = {'Content-Type': 'application/json'}
             data_json = json.dumps({'params': data})
