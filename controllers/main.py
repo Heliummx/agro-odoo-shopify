@@ -62,7 +62,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
             else:
                 _logger.info("Customer not found at the database, creating new one ...")
                 partner = request.env['res.partner'].sudo().create(
-                    {'name': partner_shopify_id.get('last_name') + ", " + partner_shopify_id.get('first_name'),
+                    {'name': partner_shopify_id.get('first_name') + " " + partner_shopify_id.get('last_name'),
                      'shopify_client_id': partner_shopify_id.get('id'),
                      'customer': True,
                      'vat': partner_billing_address.get('company'),
@@ -99,9 +99,11 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                     'name': partner_billing_address.get('first_name') + " " + partner_billing_address.get('last_name'),
                     'customer': False,
                     'vat': partner_billing_address.get('company'),
+                    'email': partner_shopify_id.get('email'),
                     'street_name': partner_billing_address.get('address1'),
                     'zip': partner_billing_address.get('zip'),
                     'city': partner_billing_address.get('city'),
+                    'phone': phone_customer
                 })
             shipping_title = "Recoger en Tienda"
 
