@@ -61,7 +61,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                      'zip': partner_billing_address.get('zip'),
                      'city': partner_billing_address.get('city'),
                      'over_credit': True,
-                     'phone': partner_shopify_id.get('phone')
+                     'phone': phone_customer
                     })
                 
                 ultimo_consumidor_tag = request.env['marvelfields.clasificaciones'].sudo().search([('name','=', 'Shopify UC')])
