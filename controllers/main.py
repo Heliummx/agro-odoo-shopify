@@ -38,6 +38,8 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
             shopify_note = data.get("note") or ""
             shopify_note = "Nota de Envio: " + shopify_note;
 
+            phone_customer = partner_shopify_id.get('default_address').get('phone')
+            
             if not partner_shopify_id:
                 _logger.info("Partner not found in the post json, Abort")
                 return
@@ -46,7 +48,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
             if partner_odoo.exists():
                 partner = partner_odoo
                 partner.over_credit = True
-                partner.phone = partner_shopify_id.get('phone')
+                partner.phone = phone_customer
             else:
                 _logger.info("Customer not found at the database, creating new one ...")
                 partner = request.env['res.partner'].sudo().create(
