@@ -46,6 +46,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
             if partner_odoo.exists():
                 partner = partner_odoo
                 partner.over_credit = True
+                partner.phone = partner_shopify_id.get('phone')
             else:
                 _logger.info("Customer not found at the database, creating new one ...")
                 partner = request.env['res.partner'].sudo().create(
@@ -57,7 +58,8 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                      'street_name': partner_billing_address.get('address1'),
                      'zip': partner_billing_address.get('zip'),
                      'city': partner_billing_address.get('city'),
-                     'over_credit': True
+                     'over_credit': True,
+                     'phone': partner_shopify_id.get('phone')
                     })
                 
                 ultimo_consumidor_tag = request.env['marvelfields.clasificaciones'].sudo().search([('name','=', 'Shopify UC')])
