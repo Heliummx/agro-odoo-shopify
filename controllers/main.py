@@ -31,6 +31,16 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
             if not data:
                 _logger.info("No data found, Abort")
                 return
+            
+            # Search and get  ID sale order Shopify
+            sale_order_id = data.get('id');
+            # Search on Odoo and exit if exists
+            sale_order_odoo = request.env['sale.order'].sudo().search([('shopify_sale_order_id', '=', sale_order_id)])
+            if sale_order_odoo.exists():
+                _logger.info("Duplicated Order, exiting right now...")
+                return
+          
+        
             partner_shopify_id = data.get('customer')
             partner_billing_address = data.get('billing_address')
             partner_shipping_address = data.get('shipping_address')
@@ -147,7 +157,8 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                     'x_studio_metodo_de_pago': data.get('gateway'),
                     'x_studio_metodo_de_envio_shopify': shipping_title,
                     'x_studio_comentarios': shopify_note,
-                    'x_studio_pago_con_gift_cards': it_was_gift_card
+                    'x_studio_pago_con_gift_cards': it_was_gift_card,
+                    'shopify_sale_order_id': sale_order_id
                 }, )
             _logger.info("Confirming the created sale")
             
