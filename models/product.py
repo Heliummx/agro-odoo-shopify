@@ -54,7 +54,8 @@ class ProductTemplate(models.Model):
                     "sales_price": variant.list_price,
                     "barcode": variant.barcode,
                     "taxable": bool(variant.taxes_id),
-                    "shopify_variant_id": variant.shopify_variant_id
+                    "shopify_variant_id": variant.shopify_variant_id,
+                    "inventory_item_id": variant.shopify_inventory_item_id
                 } for variant in variants
             ]
         }
