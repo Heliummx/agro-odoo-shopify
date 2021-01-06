@@ -11,13 +11,40 @@ class ProductTemplate(models.Model):
 
     shopify_product_id = fields.Char()
 
+    def get_alternatives_products(self):
+        alt_products = []
+        for alt_product in self.alternative_product_ids:
+            alt_products.append({
+                "sku": alt_product.default_code,
+                "shopify_id": alt_product.shopify_product_id
+            })
+        return alt_products
+
+    def get_products_accesories(self):
+        acc_products = []
+        for acc_product in self.accessory_product_ids:
+            acc_products.append({
+                "sku": acc_product.default_code,
+                "shopify_id": acc_product.shopify_product_id
+            })
+        return acc_products
+
+
     def get_product_parent_tags(self):
         res_categ = []
         for categs in self.public_categ_ids:
-            res_categ.append(categs.display_name.split('/'))
-        if res_categ:
-            if len(res_categ) <= 1:
-                res_categ = res_categ[0]
+            current_category = categs;
+            while current_category:
+                pair_split = {
+                    "parent_tag": current_category.parent_id.name,
+                    "son_tag": current_category.name
+                }
+                current_category = current_category.parent_id
+                res_categ.append(pair_split)
+            ## res_categ.append(categs.display_name.split('/'))
+        # if res_categ:
+        #     if len(res_categ) <= 1:
+        #         res_categ = res_categ[0]
 
         return res_categ
 
@@ -35,7 +62,7 @@ class ProductTemplate(models.Model):
             additional_images.append( image_data.image.decode('utf-8') )
         shopify_data_post = {
             "title": self.name,
-            "vendor": self.marca_ids.mapped('display_name'),
+            "vendor": self.product_brand_id.mapped('display_name'), # Revisar en que campo está el nombre.
             "shopify_product_id": self.shopify_product_id,
             "description": self.website_description,
             "tags": self.get_product_parent_tags(),
