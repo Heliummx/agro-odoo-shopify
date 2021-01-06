@@ -70,6 +70,8 @@ class ProductTemplate(models.Model):
             "table_image": table_image,
             "additional_images": additional_images,
             "is_published": self.x_studio_website_shopify,
+            "product_accesories": self.get_products_accesories(),
+            "product_alternatives": self.get_alternatives_products(),
             "variants": [
                 {
                     "sku": variant.default_code,
