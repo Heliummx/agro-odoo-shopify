@@ -11,6 +11,15 @@ class ProductTemplate(models.Model):
 
     shopify_product_id = fields.Char()
 
+    def get_product_spareparts(self):
+        spare_products = [];
+        for product in self.spare_parts_product_ids:
+            spare_products.append({
+                "sku": product.default_code,
+                "shopify_id": product.shopify_product_id
+            })
+        return spare_products
+
     def get_alternatives_products(self):
         alt_products = []
         for alt_product in self.alternative_product_ids:
@@ -72,6 +81,7 @@ class ProductTemplate(models.Model):
             "is_published": self.x_studio_website_shopify,
             "product_accesories": self.get_products_accesories(),
             "product_alternatives": self.get_alternatives_products(),
+            "spare_products": self.get_product_spareparts(),
             "variants": [
                 {
                     "sku": variant.default_code,
