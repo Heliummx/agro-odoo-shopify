@@ -17,8 +17,7 @@ class ProductTemplate(models.Model):
         for product in self.spare_parts_product_ids:
             spare_products.append({
                 "sku": product.default_code,
-                "shopify_id": product.shopify_product_id,
-                "handle":product.shopify_handle
+                "shopify_id": product.shopify_product_id
             })
         return spare_products
 
@@ -27,8 +26,7 @@ class ProductTemplate(models.Model):
         for alt_product in self.alternative_product_ids:
             alt_products.append({
                 "sku": alt_product.default_code,
-                "shopify_id": alt_product.shopify_product_id,
-                "handle":alt_product.shopify_handle
+                "shopify_id": alt_product.shopify_product_id
             })
         return alt_products
 
@@ -37,8 +35,7 @@ class ProductTemplate(models.Model):
         for acc_product in self.accessory_product_ids:
             acc_products.append({
                 "sku": acc_product.default_code,
-                "shopify_id": acc_product.shopify_product_id,
-                "handle":acc_product.shopify_handle
+                "shopify_id": acc_product.shopify_product_id
             })
         return acc_products
 
