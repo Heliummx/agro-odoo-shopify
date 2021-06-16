@@ -74,6 +74,7 @@ class ProductTemplate(models.Model):
             "title": self.name,
             "vendor": self.product_brand_id.mapped('display_name'), # Revisar en que campo está el nombre.
             "shopify_product_id": self.shopify_product_id,
+            #"shopify_handle": self.shopify_handle,
             "description": self.website_description,
             "tags": self.get_product_parent_tags(),
             "images": product_image,
