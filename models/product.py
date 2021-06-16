@@ -10,6 +10,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     shopify_product_id = fields.Char()
+    shopify_handle = fields.Char()
 
     def get_product_spareparts(self):
         spare_products = [];
