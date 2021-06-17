@@ -10,7 +10,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     shopify_product_id = fields.Char()
-    shopify_handle = fields.Char()
+    #shopify_handle = fields.Char()
 
     def get_product_spareparts(self):
         spare_products = [];
@@ -64,10 +64,14 @@ class ProductTemplate(models.Model):
         product_image = ''
         table_image = ''
         additional_images = []
+        taxes_amounts = []
         if self.image:
             product_image = self.image.decode('utf-8')
         if self.x_studio_image_shopify:
             table_image = self.x_studio_image_shopify.decode('utf-8')
+        if self.taxes_id:
+            for tax in self.taxes_id:
+                taxes_amounts.append(tax.amount)
         for image_data in self.product_image_ids:
             additional_images.append( image_data.image.decode('utf-8') )
         shopify_data_post = {
@@ -84,6 +88,7 @@ class ProductTemplate(models.Model):
             "product_accesories": self.get_products_accesories(),
             "product_alternatives": self.get_alternatives_products(),
             "spare_products": self.get_product_spareparts(),
+            "taxes":taxes_amounts,
             "variants": [
                 {
                     "sku": variant.default_code,
