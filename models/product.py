@@ -10,14 +10,15 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     shopify_product_id = fields.Char()
-    #shopify_handle = fields.Char()
+    shopify_handle = fields.Char(string="Shopify Handle")
 
     def get_product_spareparts(self):
         spare_products = [];
         for product in self.spare_parts_product_ids:
             spare_products.append({
                 "sku": product.default_code,
-                "shopify_id": product.shopify_product_id
+                "shopify_id": product.shopify_product_id,
+                "shopify_handle":product.shopify_handle
             })
         return spare_products
 
@@ -26,7 +27,8 @@ class ProductTemplate(models.Model):
         for alt_product in self.alternative_product_ids:
             alt_products.append({
                 "sku": alt_product.default_code,
-                "shopify_id": alt_product.shopify_product_id
+                "shopify_id": alt_product.shopify_product_id,
+                "shopify_handle":alt_product.shopify_handle
             })
         return alt_products
 
@@ -35,7 +37,8 @@ class ProductTemplate(models.Model):
         for acc_product in self.accessory_product_ids:
             acc_products.append({
                 "sku": acc_product.default_code,
-                "shopify_id": acc_product.shopify_product_id
+                "shopify_id": acc_product.shopify_product_id,
+                "shopify_handle":acc_product.shopify_handle
             })
         return acc_products
 
@@ -69,16 +72,15 @@ class ProductTemplate(models.Model):
             product_image = self.image.decode('utf-8')
         if self.x_studio_image_shopify:
             table_image = self.x_studio_image_shopify.decode('utf-8')
+        for image_data in self.product_image_ids:
+            additional_images.append( image_data.image.decode('utf-8') )
         if self.taxes_id:
             for tax in self.taxes_id:
                 taxes_amounts.append(tax.amount)
-        for image_data in self.product_image_ids:
-            additional_images.append( image_data.image.decode('utf-8') )
         shopify_data_post = {
             "title": self.name,
             "vendor": self.product_brand_id.mapped('display_name'), # Revisar en que campo está el nombre.
             "shopify_product_id": self.shopify_product_id,
-            #"shopify_handle": self.shopify_handle,
             "description": self.website_description,
             "tags": self.get_product_parent_tags(),
             "images": product_image,
@@ -96,7 +98,7 @@ class ProductTemplate(models.Model):
                                      variant_attribute in
                                      variant.attribute_value_ids],
 
-                    "stock": variant.qty_available,
+                    "stock": variant.qty_available_not_res,
                     "sales_price": variant.list_price,
                     "barcode": variant.barcode,
                     "taxable": bool(variant.taxes_id),
