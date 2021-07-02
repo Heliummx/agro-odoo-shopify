@@ -122,9 +122,9 @@ class ProductTemplate(models.Model):
                 except Exception as e:
                     _logger.error(
                         "Failed to send post request to shopify for upload the product %s, reason : %s" % (
-                            self.name, e))
+                            line.name, e))
             else:
-                _logger.error(_("The upload data is empty for the product %s") % (self.name))
+                _logger.error(_("The upload data is empty for the product %s") % (line.name))
 
 
 class ProductProduct(models.Model):
