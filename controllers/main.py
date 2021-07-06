@@ -253,6 +253,7 @@ class ShopifyOdooProductUploadResponse(http.Controller):
             if product_template_id:
                 _logger.info("Found product template by the name %s" % product_template_id.name)
                 product_template_id.shopify_product_id = data.get('shopify_product_id')
+                product_template_id.shopify_handle = data.get('shopify_handle')
                 response_variants = data.get('variants')
                 for response_variant in response_variants:
                     if response_variant.get('sku'):
