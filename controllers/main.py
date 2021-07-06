@@ -207,9 +207,12 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
     def get_sale_order_line_data(self, order_line_data, discount):
         res = []
         for line in order_line_data:
+            product_dis = 0
             product_id = request.env['product.product'].sudo().search([('default_code', '=', line['sku'])], limit=1)
+            
             if product_id:
-                res.append((0, 0, {'product_id': product_id.id, 'product_uom_qty': line.get('quantity'), 'discount': discount }))
+                product_dis = ( 1 - ( float(line.get('price')) / float(product_id.list_price) ) )  * 100  
+                res.append((0, 0, {'product_id': product_id.id, 'product_uom_qty': line.get('quantity'), 'discount': product_dis }))
         return res
 
     def get_discount_order_line_data(self, order_line_data, shopify_total):
