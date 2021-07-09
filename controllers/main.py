@@ -209,11 +209,13 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
         for line in order_line_data:
             product_dis = 0
             product_id = request.env['product.product'].sudo().search([('default_code', '=', line['sku'])], limit=1)
-            
             if product_id:
                 line_price = float(line.get('price'))
+                _logger.info("Shopify Price: %f" % line_price)
+                _logger.info("Odoo Price: %f" % float(product_id.list_price))
                 for tax in product_id.taxes_id:
-                    line_price -= float(line.get('price')) - ( float(line.get('price')) * (1-(tax.amount/100)) )
+                    _logger.info("Tax ammount: %f" % tax.amount)
+                    line_price -= float(product_id.list_price) - ( float(product_id.list_price) * (1-(tax.amount/100)) )
                 product_dis = ( 1 - line_price / float(product_id.list_price) ) * 100  
                 res.append((0, 0, {'product_id': product_id.id, 'product_uom_qty': line.get('quantity'), 'discount': product_dis }))
         return res
