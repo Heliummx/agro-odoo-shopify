@@ -13,23 +13,24 @@ class StockMoveLineInheritShopifyOdooInventorySalesSynchronisation(models.Model)
 
     def send_data_to_webserver(self):
         for line in self:
-            taxes_amounts = []
-            if line.product_id.taxes_id:
-                for tax in line.product_id.taxes_id:
-                    taxes_amounts.append(tax.amount)
-            data = {'product_id': line.product_id.id,
-                    'sku': line.product_id.default_code,
-                    'taxes':taxes_amounts,
-                    'stock_qty': line.product_id.qty_available_not_res,
-                    'price': line.product_id.list_price, 
-                    'inventory_item_id': line.product_id.shopify_inventory_item_id}
-            _logger.info("Loading data to webservice %s" % data)
-            headers = {'Content-Type': 'application/json'}
-            data_json = json.dumps({'params': data})
-            try:
-                requests.post(url=self.env.user.company_id.shopify_post_url, data=data_json, headers=headers)
-            except Exception as e:
-                _logger.error("Failed to send post request to shopify webservice, reason : %s" % e)
+            if line.product_id.shopify_inventory_item_id:
+                taxes_amounts = []
+                if line.product_id.taxes_id:
+                    for tax in line.product_id.taxes_id:
+                        taxes_amounts.append(tax.amount)
+                data = {'product_id': line.product_id.id,
+                        'sku': line.product_id.default_code,
+                        'taxes':taxes_amounts,
+                        'stock_qty': line.product_id.qty_available_not_res,
+                        'price': line.product_id.list_price, 
+                        'inventory_item_id': line.product_id.shopify_inventory_item_id}
+                _logger.info("Loading data to webservice %s" % data)
+                headers = {'Content-Type': 'application/json'}
+                data_json = json.dumps({'params': data})
+                try:
+                    requests.post(url=self.env.user.company_id.shopify_post_url, data=data_json, headers=headers)
+                except Exception as e:
+                    _logger.error("Failed to send post request to shopify webservice, reason : %s" % e)
 
     # def _action_done(self):
     #     res = super(StockMoveLineInheritShopifyOdooInventorySalesSynchronisation, self)._action_done()
