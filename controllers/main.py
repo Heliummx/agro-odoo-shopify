@@ -65,7 +65,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                     {'name': partner_shopify_id.get('first_name') + " " + partner_shopify_id.get('last_name'),
                      'shopify_client_id': partner_shopify_id.get('id'),
                      'customer': True,
-                     'vat': partner_billing_address.get('company'),
+                     #'vat': partner_billing_address.get('company'),
                      'email': partner_shopify_id.get('email'),
                      'street_name': partner_billing_address.get('address1'),
                      'zip': partner_billing_address.get('zip'),
@@ -98,7 +98,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                 {
                     'name': partner_billing_address.get('first_name') + " " + partner_billing_address.get('last_name'),
                     'customer': False,
-                    'vat': partner_billing_address.get('company'),
+                    #'vat': partner_billing_address.get('company'),
                     'email': partner_shopify_id.get('email'),
                     'street_name': partner_billing_address.get('address1'),
                     'zip': partner_billing_address.get('zip'),
@@ -115,7 +115,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                     {
                         'name':  partner_shipping_address.get('first_name') + " " + partner_shipping_address.get('last_name'),
                         'customer': False,
-                        'vat': partner_shipping_address.get('company'),
+                        #'vat': partner_shipping_address.get('company'),
                         'street_name': partner_shipping_address.get('address1'),
                         'zip': partner_shipping_address.get('zip'),
                         'city': partner_shipping_address.get('city'),
